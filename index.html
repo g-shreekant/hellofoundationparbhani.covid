@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>कोविड लस केंद्रांची उपलब्धता तपासा | Hello Foundation Parbhani</title>
+
+    <h1>💉कोविड लस केंद्रांची उपलब्धता तपासा😷</h1>
+
+    <meta charset="utf-8" />
+    <meta name="description" content="Quick way to check CoWIN vaccine centers availability.">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <br />
+        <div class="page-header">
+            <h2>हॅलो फाउंडेशन परभणी द्वारा विकसित</h2>
+
+        </div>
+        <br />
+        <form>
+            <div class="form-row">
+                <div class="col-auto">
+                    <label class="form-check-label mb-3 font-weight-bold mr-2">🧍 वय </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input mb-3" type="checkbox" id="age18" value="18" checked />
+                    <label class="form-check-label mb-3" for="age18">18+</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input mb-3" type="checkbox" id="age45" value="45" />
+                    <label class="form-check-label mb-3" for="age45">45+</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
+                    <label class="form-check-label mb-3 font-weight-bold mr-2">💰 मूल्य </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input mb-3" type="checkbox" id="free" value="Free" checked />
+                    <label class="form-check-label mb-3" for="free">मोफत</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input mb-3" type="checkbox" id="paid" value="Paid" />
+                    <label class="form-check-label mb-3" for="paid">सशुल्क</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
+                    <label class="form-check-label mb-3 font-weight-bold mr-2">🚌 द्वारा शोधा </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="searchbypincode" class="form-check-input mb-3" type="radio" name="searchBy"
+                        value="pincode" checked />
+                    <label class="form-check-label mb-3" for="searchpincode"> पिनकोड </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="searchbydistrict" class="form-check-input mb-3" type="radio" name="searchBy"
+                        value="district" />
+                    <label class="form-check-label mb-3" for="searchdistrict">जिल्हा</label>
+
+                </div>
+            </div>
+            <div class="form-row">
+                <div id="pincodeGroup" class="col-auto">
+                    <input id="pincode" class="form-control mb-3" type="text" placeholder="Pincode" />
+                </div>
+                <div id="districtGroup" class="col-auto d-none">
+                    <select id="selectState" class="form-control selectpicker mb-3 border" data-live-search="true"
+                        data-size="10" data-width="250px" data-style="btn-default" title="Select state">
+                    </select>
+                    <select id="selectDistrict" class="form-control selectpicker mb-3 border" data-live-search="true"
+                        data-size="10" data-width="250px" data-style="btn-default" title="Select district">
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button id="btnCheckAvailability" class="btn btn-success mb-3" type="button"
+                        onclick='btnCheckAvailabilityCall()'>
+✔️उपलब्धता तपासा</button>
+                </div>
+            </div>
+            <p> 🔁 कृपया प्रत्येक पिनकोड नंतर साइट रीफ्रेश करा आणि नंतर पुढील पिन कोड प्रविष्ट करा </p>
+            <div class="form-row">
+                <div class="col-auto">
+                    <div class="form-check form-check-inline">
+
+                        <input id="autocheck" class="form-check-input mb-3" type="checkbox" />
+                        <label class="form-check-label mb-3" for="autocheck">🕒 प्रत्येक मिनिट नंतर स्वयंचलित अपडेट <input
+                                id="autoCheckTime" class="text-center border rounded" style="width: 30px;" type="text"
+                                value="1" /> मिनिटे.</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
+                    <div class="form-check form-check-inline">
+                        <input id="audioalert" class="form-check-input mb-3" type="checkbox" />
+                        <label class="form-check-label mb-3" for="audioalert"> 🛎️जेव्हा केंद्र उपलब्ध असेल तेव्हा मला सतर्क करा. (एकदा केंद्र उपलब्ध झाल्यास अलर्ट अक्षम केला जाईल) <a href="#" onclick='audioalert()'>click
+                                🔊 स्मरणपत्र प्ले करा</a> </label>
+
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+        <p>🏥 केवळ उपलब्ध केंद्रे दर्शविली जातील.</p>
+        <p>🙂 टीम हॅलो फाउंडेशन विकसितः अक्षय, श्रीकांत, अभिषेक, रोहित, विवेक, शुभम, ऋषिकेश, मनीष आणि मित्र</p>
+        <p>🚑 परभणी येथे कोविड मदतीसाठी 📞  02452220182</p>
+        <p><a href="https://www.facebook.com/HELLOFOUNDATION1/">🤙 आम्हाला फेसबुक वर कनेक्ट करा</a></p>
+        <div id="notAvailableMessage" class="alert alert-danger d-none" role="alert">
+            केंद्र उपलब्ध नाही!
+        </div>
+        <div id="tablediv" class="table-responsive d-none">
+            <table id="table" class="table-striped" data-search="true" data-show-toggle="true"
+                data-show-fullscreen="true" data-show-columns="true" data-sortable="true">
+                <thead>
+                    <tr>
+                        <th data-field="centerName" data-sortable="true">Center Name</th>
+                        <th data-field="date" data-sortable="true">Date</th>
+                        <th data-field="availableCapacity" data-sortable="true">Availability</th>
+                        <th data-field="age" data-sortable="true">Age</th>
+                        <th data-field="vaccine" data-sortable="true">Vaccine Type</th>
+                        <th data-field="vaccine_fees" data-sortable="true" data-formatter="VaccineFeesFormatter">Vaccine
+                            - Fees</th>
+                        <th data-field="googlemaplink" data-formatter="LinkFormatter">Google Map</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        
+    </div>
+</body>
+<script>
+    function LinkFormatter(value) {
+        return "<a href='" + value + "' target='_blank'>View Map</a>";
+    }
+
+    function VaccineFeesFormatter(value) {
+        if (value) {
+            value.push(value[0])
+            val = "";
+            value.forEach((vaccineFee) => {
+                val += vaccineFee.vaccine + " - " + vaccineFee.fee + "\n";
+            });
+            return val;
+        }
+        else
+            return "Free";
+    }
+
+    $("#table").bootstrapTable({
+        data: [],
+        autoRefresh: true,
+    });
+
+    var timer = null;
+    function btnCheckAvailabilityCall() {
+        if (timer) {
+            window.clearTimeout(timer);
+            timer = null;
+        }
+        var isSearchByPincode = document.getElementById("searchbypincode").checked;
+        const audioAlertEnable = document.getElementById("audioalert").checked;
+        if (isSearchByPincode) {
+            var dataValue = document.getElementById("pincode").value.trim();
+        } else {
+            var dataValue = document.getElementById("selectDistrict").value;
+        }
+
+        const isValidData = (isSearchByPincode && dataValue?.length == 6) || (!isSearchByPincode && dataValue)
+
+        if (isValidData) {
+            const date = moment(new Date()).format("DD-MM-YYYY");
+            var url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/" + (isSearchByPincode ? "calendarByPin?pincode" : "calendarByDistrict?district_id") + "=" + dataValue + "&date=" + date;
+
+            var availabilityData = [];
+
+            $.ajax({
+                method: "GET",
+                url: url,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (responseJson) {
+                    if (responseJson.centers) {
+                        var centers = responseJson["centers"];
+                        var age18Value = document.getElementById("age18").checked ? document.getElementById("age18").value : null;
+                        var age45Value = document.getElementById("age45").checked ? document.getElementById("age45").value : null;
+                        var freeValue = document.getElementById("free").checked ? document.getElementById("free").value : null;
+                        var paidValue = document.getElementById("paid").checked ? document.getElementById("paid").value : null;
+                        centers.forEach((center) => {
+                            if (center.fee_type == freeValue || center.fee_type == paidValue) {
+                                center.sessions.forEach((session) => {
+                                    if (
+                                        session.available_capacity > 0 &&
+                                        (session.min_age_limit == age18Value || session.min_age_limit == age45Value)
+                                    ) {
+                                        var availableSession = {
+                                            centerName: center.name + " - " + center.block_name + " - " + center.pincode,
+                                            date: session.date,
+                                            availableCapacity: session.available_capacity,
+                                            age: session.min_age_limit,
+                                            vaccine: session.vaccine,
+                                            vaccine_fees: center.vaccine_fees,
+                                            googlemaplink: "https://www.google.com/maps/search/" + center.name + " " + center.pincode,
+                                        };
+                                        availabilityData.push(availableSession);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    if (availabilityData.length == 0) {
+                        $("#notAvailableMessage").removeClass('d-none');
+                        $("#tablediv").addClass('d-none');
+                    } else {
+                        $("#notAvailableMessage").addClass('d-none');
+                        $("#tablediv").removeClass('d-none');
+                        if (audioAlertEnable)
+                            audioalert();
+                        document.getElementById("audioalert").checked = false;
+                        if (document.getElementById("opencowin").checked)
+                            window.open("https://selfregistration.cowin.gov.in/");
+                    }
+                    $('#table').bootstrapTable("load", availabilityData);
+                },
+                error: function (jqxhr, textStatus, error) {
+                    if (jqxhr.status == 400) {
+                        alert("Invalid pincode or district!");
+                    }
+                },
+                complete: function () {
+                    if (document.getElementById("autocheck").checked) {
+                        autoCheckTime = document.getElementById("autoCheckTime").value ?? 1;
+                        timer = setTimeout(btnCheckAvailabilityCall, 1000 * 60 * autoCheckTime);
+                    }
+                }
+            })
+        } else {
+            alert("Invalid pincode or district!");
+            document.getElementById("autocheck").checked = false;
+        }
+    };
+
+    $('#selectState').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+        if (isSelected) {
+            $.ajax({
+                type: "GET",
+                url: "https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + this.value,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $('#selectDistrict').empty();
+                    $.each(data.districts, function () {
+                        var options = "<option " + "value='" + this.district_id + "'>" + this.district_name + "";
+                        $("#selectDistrict").append(options);
+                    });
+                    $('#selectDistrict').selectpicker('refresh');
+                }
+            });
+        }
+    });
+
+    $('input[type=radio][name=searchBy]').change(function () {
+        if (this.value == 'district') {
+            $("#pincodeGroup").addClass('d-none');
+            $("#districtGroup").removeClass('d-none');
+        }
+        else {
+            $("#pincodeGroup").removeClass('d-none');
+            $("#districtGroup").addClass('d-none');
+        }
+    });
+
+    $('input[type=checkbox][id=autocheck]').change(function () {
+        if (this.checked) {
+            btnCheckAvailabilityCall();
+        }
+    });
+
+    $(document).ready(function () {
+        var url = new URL(document.location);
+        var params = url.searchParams;
+        var pincode = params.get("pincode");
+        if (pincode) {
+            $("#pincode").val(pincode);
+        }
+        var age = params.get("age");
+        if (age && age == 45) {
+            document.getElementById("age45").checked = true;
+        }
+        var autocheck = params.get("autocheck");
+        if (autocheck) {
+            document.getElementById("autocheck").checked = true;
+            $("#btnCheckAvailability").click();
+        }
+        var audioalert = params.get("audioalert");
+        if (audioalert) {
+            document.getElementById("audioalert").checked = true;
+        }
+        opencowin = params.get("opencowin");
+        if (opencowin) {
+            document.getElementById("opencowin").checked = true;
+        }
+
+        $('#pincode').keypress(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                $("#btnCheckAvailability").click();
+                return false;
+            }
+        });
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "https://cdn-api.co-vin.in/api/v2/admin/location/states",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $.each(data.states, function () {
+                var options = "<option " + "value='" + this.state_id + "'>" + this.state_name + "";
+                $("#selectState").append(options);
+            });
+            $('#selectState').selectpicker('refresh');
+        }
+    });
+
+    function audioalert() {
+        const msg = new SpeechSynthesisUtterance("Thanks for checking hello foundation portal. Vaccine centers are available");
+        window.speechSynthesis.speak(msg);
+    };
+
+</script>
+
+</html>
